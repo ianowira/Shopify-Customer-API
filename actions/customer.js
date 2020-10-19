@@ -19,7 +19,7 @@ function Customer(id) {
     });
 
     let data = await response.json()
-    return data;
+    return data.customer;
   }
 
   this.giftCards = async function giftCardsAsync(id) {
@@ -32,15 +32,29 @@ function Customer(id) {
       },
     });
 
-    let data = await response.json()
-    return data.gift_cards.filter(giftCard => {
+    let data = await response.json();
 
-      return giftCard.customer_id === parseInt(id);
+    return data.gift_cards.filter(giftCard => giftCard.customer_id === parseInt(id));
+
+  }
+
+  this.orders = async function getOrders(id) {
+    const response = await fetch(
+      `${ShopifyConfig.baseURL}/orders.json?customer_id=${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Basic ${base64.encode(`${ShopifyConfig.apiKey}:${ShopifyConfig.password}`)}`,
+      },
     });
+
+    let data = await response.json();
+
+    return data.orders;
   }
 
   this.all = async function getAll() {
-    const response = await Promise.all([this.profile(this.id), this.giftCards(this.id)]);
+    const response = await Promise.all([this.profile(this.id), this.orders(this.id), this.giftCards(this.id)]);
     return await response;
   }
 }

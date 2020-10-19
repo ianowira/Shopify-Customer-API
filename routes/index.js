@@ -1,12 +1,6 @@
 const routes = require('express').Router();
 
-const {
-  response
-} = require('express');
-
-const Shopify = require('../config/Shopify');
-
-const shopifyConfig = Shopify.config;
+require('express');
 
 const Customer = require('../actions/customer');
 
@@ -25,7 +19,11 @@ routes.get('/customers/:id', async (req, res) => {
 
   const profile = async () => {
     const user = await currentUser.all();
-    res.status(200).send(user);
+    res.status(200).send({
+      profile: user[0],
+      orders: user[1],
+      gift_cards: user[2]
+    });
   }
 
   profile();
