@@ -40,7 +40,7 @@ function Customer(id) {
 
   this.orders = async function getOrders(id) {
     const response = await fetch(
-      `${ShopifyConfig.baseURL}/orders.json?customer_id=${id}`, {
+      `${ShopifyConfig.baseURL}/customers/${id}/orders.json?status=any`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

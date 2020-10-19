@@ -32,7 +32,11 @@ routes.get('/customers/:id', async (req, res) => {
 
   const key = `getUSER_${id}`;
 
-  cache.get(key, () => profile());
+  if (process.env.NODE_ENV === 'production') {
+    cache.get(key, () => profile());
+  } else {
+    profile();
+  }
 
 });
 
