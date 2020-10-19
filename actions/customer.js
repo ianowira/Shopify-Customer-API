@@ -22,7 +22,7 @@ function Customer(id) {
     return data;
   }
 
-  this.giftCards = async function giftCardsAsync() {
+  this.giftCards = async function giftCardsAsync(id) {
     const response = await fetch(
       `${ShopifyConfig.baseURL}/gift_cards.json`, {
       method: 'GET',
@@ -33,7 +33,15 @@ function Customer(id) {
     });
 
     let data = await response.json()
-    return data;
+    return data.gift_cards.filter(giftCard => {
+
+      return giftCard.customer_id === parseInt(id);
+    });
+  }
+
+  this.all = async function getAll() {
+    const response = await Promise.all([this.profile(this.id), this.giftCards(this.id)]);
+    return await response;
   }
 }
 

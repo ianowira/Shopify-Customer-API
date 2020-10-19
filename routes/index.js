@@ -23,16 +23,13 @@ routes.get('/customers/:id', async (req, res) => {
   const id = req.params.id;
   const currentUser = new Customer(id);
 
-  currentUser.profile(id).then(data => console.log(data));
+  const profile = async () => {
+    const user = await currentUser.all();
+    res.status(200).send(user);
+  }
 
-  currentUser.giftCards(id).then(data => {
-    let gift_cards = data.gift_cards.filter(giftCard => giftCard.customer_id === id)
-    console.log(gift_cards);
-  });
+  profile();
 
-  res.status(200).json({
-    res: req.params
-  });
 });
 
 routes.use((req, res) => {
