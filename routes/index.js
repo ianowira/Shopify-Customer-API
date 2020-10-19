@@ -3,6 +3,10 @@ const routes = require('express').Router();
 require('express');
 
 const Customer = require('../actions/customer');
+const CacheService = require('../config/CacheService');
+
+const ttl = 60 * 60 * 1; // cache for 1 Hour
+const cache = new CacheService(ttl); // Create a new cache service instance
 
 routes.get('/', async (req, res) => {
 
@@ -26,7 +30,9 @@ routes.get('/customers/:id', async (req, res) => {
     });
   }
 
-  profile();
+  const key = `getUSER_${id}`;
+
+  cache.get(key, () => profile());
 
 });
 
