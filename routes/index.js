@@ -5,7 +5,7 @@ require('express');
 const Customer = require('../actions/customer');
 const CacheService = require('../config/CacheService');
 
-const ttl = 60 * 60 * 1; // cache for 1 Hour
+const ttl = 60 * 60; // cache for 1 Hour
 const cache = new CacheService(ttl); // Create a new cache service instance
 
 routes.get('/', async (req, res) => {
@@ -35,7 +35,7 @@ routes.get('/customers/:id', async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     cache.get(key, () => profile());
   } else {
-    profile();
+    await profile();
   }
 
 });

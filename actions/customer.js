@@ -54,8 +54,7 @@ function Customer(id) {
   }
 
   this.all = async function getAll() {
-    const response = await Promise.all([this.profile(this.id), this.orders(this.id), this.giftCards(this.id)]);
-    return await response;
+    return await Promise.all([this.profile(this.id), this.orders(this.id), this.giftCards(this.id)]);
   }
 }
 
